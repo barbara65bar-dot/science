@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodo Scientifico</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #b3e5ff, #8bd3ff);
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            max-width: 800px;
+            width: 90%;
+        }
+        
+        h1 {
+            color: #2c6fb7;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+        
+        .step {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .step.active {
+            display: block;
+        }
+        
+        .emoji {
+            font-size: 80px;
+            margin-bottom: 15px;
+        }
+        
+        .step-title {
+            font-size: 28px;
+            color: #ff6b00;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .step-text {
+            font-size: 22px;
+            color: #333;
+            line-height: 1.4;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        button {
+            font-size: 20px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            background: #ffe08a;
+            font-family: "Comic Sans MS", cursive;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #ffd966;
+            transform: scale(1.05);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .progress {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            transition: background 0.3s ease;
+        }
+        
+        .dot.active {
+            background: #4fa3f7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔬 Il Metodo Scientifico 🔍</h1>
+        
+        <div class="steps-container">
+            <div class="step active" id="step1">
+                <div class="emoji">👀</div>
+                <div class="step-title">1. OSSERVAZIONE</div>
+                <div class="step-text">Guardo il mondo che mi circonda e noto qualcosa di interessante</div>
+            </div>
+            
+            <div class="step" id="step2">
+                <div class="emoji">❓</div>
+                <div class="step-title">2. DOMANDA</div>
+                <div class="step-text">Mi faccio una domanda su quello che ho osservato</div>
+            </div>
+            
+            <div class="step" id="step3">
+                <div class="emoji">💡</div>
+                <div class="step-title">3. IPOTESI</div>
+                <div class="step-text">Penso a una possibile risposta o spiegazione</div>
+            </div>
+            
+            <div class="step" id="step4">
+                <div class="emoji">🧪</div>
+                <div class="step-title">4. ESPERIMENTO</div>
+                <div class="step-text">Faccio una prova per testare la mia idea</div>
+            </div>
+            
+            <div class="step" id="step5">
+                <div class="emoji">📊</div>
+                <div class="step-title">5. ANALISI</div>
+                <div class="step-text">Osservo e registro cosa è successo durante l'esperimento</div>
+            </div>
+            
+            <div class="step" id="step6">
+                <div class="emoji">🎉</div>
+                <div class="step-title">6. CONCLUSIONE</div>
+                <div class="step-text">Scopro se la mia idea era giusta e imparo qualcosa di nuovo!</div>
+            </div>
+        </div>
+        
+        <div class="progress">
+            <div class="dot active" data-step="0"></div>
+            <div class="dot" data-step="1"></div>
+            <div class="dot" data-step="2"></div>
+            <div class="dot" data-step="3"></div>
+            <div class="dot" data-step="4"></div>
+            <div class="dot" data-step="5"></div>
+        </div>
+        
+        <div class="buttons">
+            <button id="prevBtn" disabled>⬅️ Indietro</button>
+            <button id="nextBtn">➡️ Avanti</button>
+        </div>
+    </div>
+
+    <script>
+        const steps = document.querySelectorAll('.step');
+        const dots = document.querySelectorAll('.dot');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentStep = 0;
+
+        function updateSteps() {
+            // Nascondi tutti gli step
+            steps.forEach(step => step.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            // Mostra lo step corrente
+            steps[currentStep].classList.add('active');
+            dots[currentStep].classList.add('active');
+            
+            // Aggiorna stato pulsanti
+            prevBtn.disabled = currentStep === 0;
+            nextBtn.disabled = currentStep === steps.length - 1;
+            
+            // Cambia testo ultimo pulsante
+            if (currentStep === steps.length - 1) {
+                nextBtn.textContent = '🎉 Fine!';
+            } else {
+                nextBtn.textContent = '➡️ Avanti';
+            }
+        }
+
+        // Event listeners
+        nextBtn.addEventListener('click', () => {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                updateSteps();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 0) {
+                currentStep--;
+                updateSteps();
+            }
+        });
+
+        // Click sui dots per navigazione diretta
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentStep = index;
+                updateSteps();
+            });
+        });
+
+        // Inizializza
+        updateSteps();
+    </script>
+</body>
+</html>
